@@ -111,7 +111,7 @@ import org.apache.spark.util._
  *    include the new structure. This will help to catch memory leaks.
  */
 private[spark]
-class DAGScheduler(
+class DAGScheduler( // Spark内核会在需要计算发生的时刻绘制一张关于计算路径的有向无环图，也就是DAG。
     private[scheduler] val sc: SparkContext,
     private[scheduler] val taskScheduler: TaskScheduler,
     listenerBus: LiveListenerBus,
