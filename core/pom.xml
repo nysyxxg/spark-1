@@ -38,10 +38,12 @@
       <artifactId>avro-mapred</artifactId>
       <classifier>${avro.mapred.classifier}</classifier>
     </dependency>
+
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
     </dependency>
+
     <dependency>
       <groupId>com.twitter</groupId>
       <artifactId>chill_${scala.binary.version}</artifactId>

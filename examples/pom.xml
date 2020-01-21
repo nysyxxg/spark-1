@@ -46,54 +46,56 @@
       <groupId>org.spark-project.spark</groupId>
       <artifactId>unused</artifactId>
       <version>1.0.0</version>
-      <scope>provided</scope>
+      <!--<scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-core_${scala.binary.version}</artifactId>
       <version>${project.version}</version>
-      <scope>provided</scope>
+      <!-- 此标签表示编译环境可用，运行时则不可用，主要是在 打包时不将这些依赖打进来，因为服务器上有，以免包过大
+        在本地测试的时候，需要注释掉  不然会报找不到类 -->
+      <!--<scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-streaming_${scala.binary.version}</artifactId>
       <version>${project.version}</version>
-      <scope>provided</scope>
+      <!--<scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-mllib_${scala.binary.version}</artifactId>
       <version>${project.version}</version>
-      <scope>provided</scope>
+      <!--<scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-hive_${scala.binary.version}</artifactId>
       <version>${project.version}</version>
-      <scope>provided</scope>
+      <!--<scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-graphx_${scala.binary.version}</artifactId>
       <version>${project.version}</version>
-      <scope>provided</scope>
+      <!--<scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-streaming-flume_${scala.binary.version}</artifactId>
       <version>${project.version}</version>
-      <scope>provided</scope>
+      <!--<scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-streaming-kafka-0-8_${scala.binary.version}</artifactId>
       <version>${project.version}</version>
-      <scope>provided</scope>
+      <!--<scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-math3</artifactId>
-      <scope>provided</scope>
+      <!--<scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.scalacheck</groupId>
@@ -103,7 +105,7 @@
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
-      <scope>provided</scope>
+      <!--<scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>com.github.scopt</groupId>
@@ -113,7 +115,7 @@
     <dependency>
       <groupId>com.twitter</groupId>
       <artifactId>parquet-hadoop-bundle</artifactId>
-      <scope>provided</scope>
+      <!--<scope>provided</scope>-->
     </dependency>
   </dependencies>
 
