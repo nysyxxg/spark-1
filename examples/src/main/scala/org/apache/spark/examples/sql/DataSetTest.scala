@@ -3,12 +3,19 @@ package org.apache.spark.examples.sql
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.SparkSession
 
+// 定义case class
+case class Person(name: String, zip: Long)
+case class Person2(id:String, name: String, age: Long)
+case class Data(a: Int,b: String)
+case class Student(name: String, age: Long, major: String)
+case class University(name: String, numStudents: Long, yearFounded: Long)
+//    创建Major的分类
+case class Major(shortName: String, fullName: String)
 // xxg
 object DataSetTest {
 
   def main(args: Array[String]): Unit = {
 
-    case class Person(name: String, zip: Long)
     val spark = SparkSession
       .builder()
       .appName("Spark Hive Example")
@@ -22,7 +29,6 @@ object DataSetTest {
     df.as[Person].collect()
     df.as[Person].show()
 
-    case class Data(a: Int,b: String)
     val ds1 = Seq(Data(1, "one"), Data(2, "two")).toDS()
     ds1.collect()
     ds1.show()
@@ -40,16 +46,10 @@ object DataSetTest {
 
     val wordCount = ds.flatMap(_.split(" ")).filter(_ != "").groupBy().count().show()
 
-
-    // 定义case class
-    case class University(name: String, numStudents: Long, yearFounded: Long)
-
     // 创建DataSet
-    val schools = spark.read.json("hdfs://hadoop1:9000/schools.json").as[University]
-
+    // val schools = spark.read.json("hdfs://hadoop1:9000/schools.json").as[University]
     // 操作DataSet
-    schools.map(sc => s"${sc.name} is ${2015 - sc.yearFounded} years old").show
-
+    // schools.map(sc => s"${sc.name} is ${2015 - sc.yearFounded} years old").show
 
     // JSON -> DataFrame
     val df2 = spark.read.json("hdfs://hadoop1:9000/person.json")
@@ -60,14 +60,12 @@ object DataSetTest {
 
     // DataFrame转DataSet
     //#DataFrame -> Dataset
-    case class Person2(age: Long, name: String)
     val ds2 = df2.as[Person2]
     ds2.filter(_.age >= 20).show
 
 //    DataSet转DataFrame
 //    # Dataset -> DataFrame
     val df3 = ds2.toDF
-
 
 //    DataFrame和DataSet操作对比
     import org.apache.spark.sql.types._
@@ -91,18 +89,15 @@ object DataSetTest {
 //    把json转DataFrame
     val df4 = spark.read.json("hdfs://hadoop1:9000/student.json")
 //    DataFrame转DataSet
-    case class Student(name: String, age: Long, major: String)
+
     val studentDS = df4.as[Student]
     studentDS.select($"name".as[String], $"age".as[Long]).filter(_._2 > 19).collect()
 
 //    DataSet根据major分组求和
     studentDS.groupBy("major").count().collect()
 //    DataSet根据major分组聚合
-
     import org.apache.spark.sql.functions._
     studentDS.groupBy("major").agg(avg($"age").as[Double]).collect()
-//    创建Major的分类
-    case class Major(shortName: String, fullName: String)
     val majors = Seq(Major("CS", "Computer Science"), Major("Math", "Mathematics")).toDS()
 //    把studentDS和majors求join
     val joined = studentDS.joinWith(majors, $"major" === $"shortName")
