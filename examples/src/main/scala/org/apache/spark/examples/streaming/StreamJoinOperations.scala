@@ -19,8 +19,8 @@ object StreamJoinOperations extends  SparkAppCommon{
     // 如果本地测试streaming 必须设置 local[num]  其中num >=2
     val sparkConf = new SparkConf().setAppName("NetworkWordCount").setMaster("local[*]")
     val ssc = new StreamingContext(sparkConf, Seconds(20))
-    val stream7777 = ssc.socketTextStream("172.21.1.185", 7777, StorageLevel.MEMORY_AND_DISK_SER)
-    val stream8888 = ssc.socketTextStream("172.21.1.185", 9999, StorageLevel.MEMORY_AND_DISK_SER)
+    val stream7777 = ssc.socketTextStream(args(0), 7777, StorageLevel.MEMORY_AND_DISK_SER)
+    val stream8888 = ssc.socketTextStream(args(0), 9999, StorageLevel.MEMORY_AND_DISK_SER)
     val words7 = stream7777.flatMap(_.split(" "))
     val words8 = stream8888.flatMap(_.split(" "))
 

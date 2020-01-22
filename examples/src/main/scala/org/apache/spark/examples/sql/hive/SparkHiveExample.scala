@@ -23,6 +23,18 @@ import org.apache.spark.sql.Row
 import org.apache.spark.sql.SparkSession
 // $example off:spark_hive$
 
+/**
+  * DataSet是从Spark 1.6开始引入的一个新的抽象
+  * DataSet是从Spark 1.6开始引入的一个新的抽象。
+  * DataSet是特定域对象中的强类型集合，它可以使用函数或者相关操作并行地进行转换等操作。
+  * 每个DataSet都有一个称为DataFrame的非类型化的视图，这个视图是行的数据集。
+  * 为了有效地支持特定域对象，DataSet引入了Encoder（编码器）。
+  * 例如，给出一个Person的类，有两个字段：name(string)和age(int)，
+  * 通过一个encoder来告诉spark在运行的时候产生代码把Person对象转换成一个二进制结构。
+  * 这种二进制结构通常有更低的内存占用，以及优化的数据处理效率（例如在一个柱状格式）。
+  * 若要了解数据的内部二进制表示，请使用schema(表结构)函数。
+  *
+  */
 object SparkHiveExample {
 
   // $example on:spark_hive$

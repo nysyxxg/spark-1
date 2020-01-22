@@ -43,7 +43,7 @@ import org.apache.spark.sql.functions._
  * and then run the example
  *    `$ bin/run-example sql.streaming.StructuredNetworkWordCountWindowed
  *    localhost 9999 <window duration in seconds> [<slide duration in seconds>]`
- *
+ *    在事件时间上的窗口操作
  * One recommended <window duration>, <slide duration> pair is 10, 5
  */
 object StructuredNetworkWordCountWindowed {
@@ -64,7 +64,7 @@ object StructuredNetworkWordCountWindowed {
     }
     val windowDuration = s"$windowSize seconds"
     val slideDuration = s"$slideSize seconds"
-
+    // 1: 创建sparkSession
     val spark = SparkSession
       .builder
       .appName("StructuredNetworkWordCountWindowed")
@@ -73,7 +73,7 @@ object StructuredNetworkWordCountWindowed {
     import spark.implicits._
 
     // Create DataFrame representing the stream of input lines from connection to host:port
-    val lines = spark.readStream
+    val lines = spark.readStream  // 2：定义数据源的输入  readStream 读取Stream
       .format("socket")
       .option("host", host)
       .option("port", port)
@@ -91,10 +91,11 @@ object StructuredNetworkWordCountWindowed {
     ).count().orderBy("window")
 
     // Start running the query that prints the windowed word counts to the console
-    val query = windowedCounts.writeStream
+    val query = windowedCounts.writeStream   // 3  定义处理后数据源的输出：  writeStream: 写stream
       .outputMode("complete")
       .format("console")
       .option("truncate", "false")
+      //   .option("checkpointLocation", "path/to/checkpoint/dir")
       .start()
 
     query.awaitTermination()
