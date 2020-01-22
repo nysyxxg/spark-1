@@ -23,7 +23,7 @@ import org.apache.spark.sql.SparkSession
 /**
  * Usage: BroadcastTest [slices] [numElem] [blockSize]
  */
-object BroadcastTest {
+object BroadcastTest extends  SparkAppCommon{
   def main(args: Array[String]) {
 
     val blockSize = if (args.length > 2) args(2) else "4096"
@@ -31,6 +31,7 @@ object BroadcastTest {
     val spark = SparkSession
       .builder()
       .appName("Broadcast Test")
+      .master("local")
       .config("spark.broadcast.blockSize", blockSize)
       .getOrCreate()
 

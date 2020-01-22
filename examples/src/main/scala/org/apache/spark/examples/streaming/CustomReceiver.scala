@@ -34,6 +34,7 @@ import org.apache.spark.streaming.receiver.Receiver
  *
  * To run this on your local machine, you need to first run a Netcat server
  *    `$ nc -lk 9999`
+  *     nc -l 7777
  * and then run the example
  *    `$ bin/run-example org.apache.spark.examples.streaming.CustomReceiver localhost 9999`
  */
