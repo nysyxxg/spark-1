@@ -16,14 +16,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
+# 判断是否配置了SPARK_HOME，如果没有则手动设置
 if [ -z "${SPARK_HOME}" ]; then
   source "$(dirname "$0")"/find-spark-home
 fi
-
+# 通过.加上文件名临时执行load-spark-env.sh脚本
+## 设置SPARK_HOME、SPARK_SCALA_VERSION环境变量
 . "${SPARK_HOME}"/bin/load-spark-env.sh
 
 # Find the java binary
+# 判断是否设置JAVA_HOME,获取java可执行文件的位置并赋值给RUNNER
 if [ -n "${JAVA_HOME}" ]; then
   RUNNER="${JAVA_HOME}/bin/java"
 else
@@ -36,6 +38,7 @@ else
 fi
 
 # Find Spark jars.
+# 获取spark的jar包的位置
 if [ -d "${SPARK_HOME}/jars" ]; then
   SPARK_JARS_DIR="${SPARK_HOME}/jars"
 else
@@ -67,14 +70,17 @@ fi
 #
 # The exit code of the launcher is appended to the output, so the parent shell removes it from the
 # command array and checks the value to see if the launcher succeeded.
+# 组装参数并打印
 build_command() {
   "$RUNNER" -Xmx128m -cp "$LAUNCH_CLASSPATH" org.apache.spark.launcher.Main "$@"
   printf "%d\0" $?
 }
 
 CMD=()
+# 读取变量
 while IFS= read -d '' -r ARG; do
   CMD+=("$ARG")
+  # 组装数据
 done < <(build_command "$@")
 
 COUNT=${#CMD[@]}
@@ -92,6 +98,12 @@ fi
 if [ $LAUNCHER_EXIT_CODE != 0 ]; then
   exit $LAUNCHER_EXIT_CODE
 fi
-
+# 执行最终命令
 CMD=("${CMD[@]:0:$LAST}")
 exec "${CMD[@]}"
+
+#debug spark-class脚本
+#sh -x /usr/local/spark/bin/spark-class org.apache.spark.deploy.master.Master --host s101 --port 7077 --webui-port 8080
+
+#执行org.apache.spark.deploy.master.Master中的main方法
+#/usr/local/jdk/bin/java -cp '/usr/local/spark/conf/:/usr/local/spark/jars/*:/usr/local/spark/hadoop/etc/hadoop' -Xmx1g org.apache.spark.deploy.master.Master --host s101 --port 7077 --webui-port 8080
