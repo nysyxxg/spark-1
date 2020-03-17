@@ -1,0 +1,12 @@
+编译命令
+-T指参与编译的线程数量
+./build/mvn -T 6 -DskipTests clean package
+
+
+不需要打安装包编译命令
+./bui./dev/make-distribution.sh --name mySpark --tgz ld/mvn -Pyarn -Phadoop-2.7 -Dhadoop.version=2.7.3 -Phive -Phive-thriftserver -Dscala-2.11 -DskipTests clean package
+
+需要打安装包编译命令
+./dev/make-distribution.sh --name gosunSpark --tgz -Pyarn -Phadoop-2.7 -Dhadoop.version=2.7.3 -Phive -Phive-thriftserver -Dscala-2.11
+
+./dev/make-distribution.sh --name mySpark --tgz
