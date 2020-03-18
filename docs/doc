@@ -7,6 +7,6 @@
 ./bui./dev/make-distribution.sh --name mySpark --tgz ld/mvn -Pyarn -Phadoop-2.7 -Dhadoop.version=2.7.3 -Phive -Phive-thriftserver -Dscala-2.11 -DskipTests clean package
 
 需要打安装包编译命令
-./dev/make-distribution.sh --name gosunSpark --tgz -Pyarn -Phadoop-2.7 -Dhadoop.version=2.7.3 -Phive -Phive-thriftserver -Dscala-2.11
+./dev/make-distribution.sh --name gosunSpark --tgz -Pyarn -Phadoop-2.6.5 -Dhadoop.version=2.6.5 -Phive -Phive-thriftserver -Dscala-2.11
 
 ./dev/make-distribution.sh --name mySpark --tgz
