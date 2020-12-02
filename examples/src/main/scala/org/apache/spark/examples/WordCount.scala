@@ -1,7 +1,7 @@
 package org.apache.spark.examples
 
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
+import org.apache.spark.sql.{Dataset, SparkSession}
 
 /**
   * 开发Spark案例之WordCount
@@ -49,7 +49,7 @@ object WordCount {
       println(line._1 + "----------->" + line._2)
     })
 
-    wordCountRDD.saveAsTextFile("wordcount/res3")
+    wordCountRDD.saveAsTextFile("wordcount/res4")
 
   }
 
