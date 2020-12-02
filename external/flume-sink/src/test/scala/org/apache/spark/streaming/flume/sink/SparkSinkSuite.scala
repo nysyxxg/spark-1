@@ -24,12 +24,12 @@ import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.JavaConverters._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
-
 import org.apache.avro.ipc.NettyTransceiver
 import org.apache.avro.ipc.specific.SpecificRequestor
 import org.apache.flume.Context
 import org.apache.flume.channel.MemoryChannel
 import org.apache.flume.event.EventBuilder
+import org.apache.spark.streaming.flume.sink.SparkFlumeProtocol.Callback
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory
 
 // Due to MNG-1378, there is not a way to include test dependencies transitively.
@@ -41,7 +41,7 @@ import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory
 import org.scalatest.FunSuite
 
 class SparkSinkSuite extends FunSuite {
-// scalastyle:on
+  // scalastyle:on
 
   val eventsPerBatch = 1000
   val channelCapacity = 5000
@@ -160,7 +160,7 @@ class SparkSinkSuite extends FunSuite {
   }
 
   private def initializeChannelAndSink(overrides: Map[String, String] = Map.empty,
-    batchCounter: Int = 1): (MemoryChannel, SparkSink, CountDownLatch) = {
+                                       batchCounter: Int = 1): (MemoryChannel, SparkSink, CountDownLatch) = {
     val channel = new MemoryChannel()
     val channelContext = new Context()
 
@@ -192,7 +192,7 @@ class SparkSinkSuite extends FunSuite {
   }
 
   private def getTransceiverAndClient(address: InetSocketAddress,
-    count: Int): Seq[(NettyTransceiver, SparkFlumeProtocol.Callback)] = {
+                                      count: Int): Seq[(NettyTransceiver, Callback)] = {
 
     (1 to count).map(_ => {
       lazy val channelFactoryExecutor = Executors.newCachedThreadPool(

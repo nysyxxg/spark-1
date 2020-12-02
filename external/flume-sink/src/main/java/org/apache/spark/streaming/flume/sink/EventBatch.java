@@ -5,8 +5,8 @@ package org.apache.spark.streaming.flume.sink;
 public class EventBatch extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
     public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"EventBatch\",\"namespace\":\"org.apache.spark.streaming.flume.sink\",\"fields\":[{\"name\":\"errorMsg\",\"type\":\"string\",\"default\":\"\"},{\"name\":\"sequenceNumber\",\"type\":\"string\"},{\"name\":\"events\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"SparkSinkEvent\",\"fields\":[{\"name\":\"headers\",\"type\":{\"type\":\"map\",\"values\":\"string\"}},{\"name\":\"body\",\"type\":\"bytes\"}]}}}]}");
     public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-    @Deprecated public java.lang.CharSequence errorMsg;
-    @Deprecated public java.lang.CharSequence sequenceNumber;
+    @Deprecated public CharSequence errorMsg;
+    @Deprecated public CharSequence sequenceNumber;
     @Deprecated public java.util.List<org.apache.spark.streaming.flume.sink.SparkSinkEvent> events;
     
     /**
@@ -19,7 +19,7 @@ public class EventBatch extends org.apache.avro.specific.SpecificRecordBase impl
     /**
      * All-args constructor.
      */
-    public EventBatch(java.lang.CharSequence errorMsg, java.lang.CharSequence sequenceNumber, java.util.List<org.apache.spark.streaming.flume.sink.SparkSinkEvent> events) {
+    public EventBatch(CharSequence errorMsg, CharSequence sequenceNumber, java.util.List<org.apache.spark.streaming.flume.sink.SparkSinkEvent> events) {
         this.errorMsg = errorMsg;
         this.sequenceNumber = sequenceNumber;
         this.events = events;
@@ -27,7 +27,7 @@ public class EventBatch extends org.apache.avro.specific.SpecificRecordBase impl
     
     public org.apache.avro.Schema getSchema() { return SCHEMA$; }
     // Used by DatumWriter.  Applications should not call.
-    public java.lang.Object get(int field$) {
+    public Object get(int field$) {
         switch (field$) {
             case 0: return errorMsg;
             case 1: return sequenceNumber;
@@ -37,10 +37,10 @@ public class EventBatch extends org.apache.avro.specific.SpecificRecordBase impl
     }
     // Used by DatumReader.  Applications should not call.
     @SuppressWarnings(value="unchecked")
-    public void put(int field$, java.lang.Object value$) {
+    public void put(int field$, Object value$) {
         switch (field$) {
-            case 0: errorMsg = (java.lang.CharSequence)value$; break;
-            case 1: sequenceNumber = (java.lang.CharSequence)value$; break;
+            case 0: errorMsg = (CharSequence)value$; break;
+            case 1: sequenceNumber = (CharSequence)value$; break;
             case 2: events = (java.util.List<org.apache.spark.streaming.flume.sink.SparkSinkEvent>)value$; break;
             default: throw new org.apache.avro.AvroRuntimeException("Bad index");
         }
@@ -49,7 +49,7 @@ public class EventBatch extends org.apache.avro.specific.SpecificRecordBase impl
     /**
      * Gets the value of the 'errorMsg' field.
      */
-    public java.lang.CharSequence getErrorMsg() {
+    public CharSequence getErrorMsg() {
         return errorMsg;
     }
     
@@ -57,14 +57,14 @@ public class EventBatch extends org.apache.avro.specific.SpecificRecordBase impl
      * Sets the value of the 'errorMsg' field.
      * @param value the value to set.
      */
-    public void setErrorMsg(java.lang.CharSequence value) {
+    public void setErrorMsg(CharSequence value) {
         this.errorMsg = value;
     }
     
     /**
      * Gets the value of the 'sequenceNumber' field.
      */
-    public java.lang.CharSequence getSequenceNumber() {
+    public CharSequence getSequenceNumber() {
         return sequenceNumber;
     }
     
@@ -72,7 +72,7 @@ public class EventBatch extends org.apache.avro.specific.SpecificRecordBase impl
      * Sets the value of the 'sequenceNumber' field.
      * @param value the value to set.
      */
-    public void setSequenceNumber(java.lang.CharSequence value) {
+    public void setSequenceNumber(CharSequence value) {
         this.sequenceNumber = value;
     }
     
@@ -112,13 +112,13 @@ public class EventBatch extends org.apache.avro.specific.SpecificRecordBase impl
     public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<EventBatch>
             implements org.apache.avro.data.RecordBuilder<EventBatch> {
         
-        private java.lang.CharSequence errorMsg;
-        private java.lang.CharSequence sequenceNumber;
+        private CharSequence errorMsg;
+        private CharSequence sequenceNumber;
         private java.util.List<org.apache.spark.streaming.flume.sink.SparkSinkEvent> events;
         
         /** Creates a new Builder */
         private Builder() {
-            super(org.apache.spark.streaming.flume.sink.EventBatch.SCHEMA$);
+            super(SCHEMA$);
         }
         
         /** Creates a Builder by copying an existing Builder */
@@ -140,7 +140,7 @@ public class EventBatch extends org.apache.avro.specific.SpecificRecordBase impl
         
         /** Creates a Builder by copying an existing EventBatch instance */
         private Builder(org.apache.spark.streaming.flume.sink.EventBatch other) {
-            super(org.apache.spark.streaming.flume.sink.EventBatch.SCHEMA$);
+            super(SCHEMA$);
             if (isValidValue(fields()[0], other.errorMsg)) {
                 this.errorMsg = data().deepCopy(fields()[0].schema(), other.errorMsg);
                 fieldSetFlags()[0] = true;
@@ -156,12 +156,12 @@ public class EventBatch extends org.apache.avro.specific.SpecificRecordBase impl
         }
         
         /** Gets the value of the 'errorMsg' field */
-        public java.lang.CharSequence getErrorMsg() {
+        public CharSequence getErrorMsg() {
             return errorMsg;
         }
         
         /** Sets the value of the 'errorMsg' field */
-        public org.apache.spark.streaming.flume.sink.EventBatch.Builder setErrorMsg(java.lang.CharSequence value) {
+        public org.apache.spark.streaming.flume.sink.EventBatch.Builder setErrorMsg(CharSequence value) {
             validate(fields()[0], value);
             this.errorMsg = value;
             fieldSetFlags()[0] = true;
@@ -181,12 +181,12 @@ public class EventBatch extends org.apache.avro.specific.SpecificRecordBase impl
         }
         
         /** Gets the value of the 'sequenceNumber' field */
-        public java.lang.CharSequence getSequenceNumber() {
+        public CharSequence getSequenceNumber() {
             return sequenceNumber;
         }
         
         /** Sets the value of the 'sequenceNumber' field */
-        public org.apache.spark.streaming.flume.sink.EventBatch.Builder setSequenceNumber(java.lang.CharSequence value) {
+        public org.apache.spark.streaming.flume.sink.EventBatch.Builder setSequenceNumber(CharSequence value) {
             validate(fields()[1], value);
             this.sequenceNumber = value;
             fieldSetFlags()[1] = true;
@@ -234,8 +234,8 @@ public class EventBatch extends org.apache.avro.specific.SpecificRecordBase impl
         public EventBatch build() {
             try {
                 EventBatch record = new EventBatch();
-                record.errorMsg = fieldSetFlags()[0] ? this.errorMsg : (java.lang.CharSequence) defaultValue(fields()[0]);
-                record.sequenceNumber = fieldSetFlags()[1] ? this.sequenceNumber : (java.lang.CharSequence) defaultValue(fields()[1]);
+                record.errorMsg = fieldSetFlags()[0] ? this.errorMsg : (CharSequence) defaultValue(fields()[0]);
+                record.sequenceNumber = fieldSetFlags()[1] ? this.sequenceNumber : (CharSequence) defaultValue(fields()[1]);
                 record.events = fieldSetFlags()[2] ? this.events : (java.util.List<org.apache.spark.streaming.flume.sink.SparkSinkEvent>) defaultValue(fields()[2]);
                 return record;
             } catch (Exception e) {

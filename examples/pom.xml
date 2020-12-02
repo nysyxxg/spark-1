@@ -123,6 +123,11 @@
       <version>5.1.45</version>
     </dependency>
 
+    <!--<dependency>-->
+      <!--<groupId>org.apache.hadoop</groupId>-->
+      <!--<artifactId>hadoop-hdfs</artifactId>-->
+      <!--<scope>${hadoop.deps.scope}</scope>-->
+    <!--</dependency>-->
   </dependencies>
 
   <build>

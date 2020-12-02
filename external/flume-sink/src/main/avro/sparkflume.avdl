@@ -19,20 +19,20 @@
 
 @namespace("org.apache.spark.streaming.flume.sink")
 
-protocol SparkFlumeProtocol {
+protocol SparkFlumeProtocol2 {
 
-  record SparkSinkEvent {
+  record SparkSinkEvent2 {
     map<string> headers;
     bytes body;
   }
 
-  record EventBatch {
+  record EventBatch2 {
     string errorMsg = ""; // If this is empty it is a valid message, else it represents an error
     string sequenceNumber;
-    array<SparkSinkEvent> events;
+    array<SparkSinkEvent2> events;
   }
 
-  EventBatch getEventBatch (int n);
+  EventBatch2 getEventBatch (int n);
 
   void ack (string sequenceNumber);
 

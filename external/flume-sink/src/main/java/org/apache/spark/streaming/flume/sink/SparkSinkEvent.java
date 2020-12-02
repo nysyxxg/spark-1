@@ -3,13 +3,13 @@
  * 
  * DO NOT EDIT DIRECTLY
  */
-package org.apache.spark.streaming.flume.sink;  
+package org.apache.spark.streaming.flume.sink;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class SparkSinkEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SparkSinkEvent\",\"namespace\":\"org.apache.spark.streaming.flume.sink\",\"fields\":[{\"name\":\"headers\",\"type\":{\"type\":\"map\",\"values\":\"string\"}},{\"name\":\"body\",\"type\":\"bytes\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  @Deprecated public java.util.Map<java.lang.CharSequence,java.lang.CharSequence> headers;
+  @Deprecated public java.util.Map<CharSequence, CharSequence> headers;
   @Deprecated public java.nio.ByteBuffer body;
 
   /**
@@ -22,14 +22,14 @@ public class SparkSinkEvent extends org.apache.avro.specific.SpecificRecordBase 
   /**
    * All-args constructor.
    */
-  public SparkSinkEvent(java.util.Map<java.lang.CharSequence,java.lang.CharSequence> headers, java.nio.ByteBuffer body) {
+  public SparkSinkEvent(java.util.Map<CharSequence, CharSequence> headers, java.nio.ByteBuffer body) {
     this.headers = headers;
     this.body = body;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call. 
-  public java.lang.Object get(int field$) {
+  public Object get(int field$) {
     switch (field$) {
     case 0: return headers;
     case 1: return body;
@@ -38,9 +38,9 @@ public class SparkSinkEvent extends org.apache.avro.specific.SpecificRecordBase 
   }
   // Used by DatumReader.  Applications should not call. 
   @SuppressWarnings(value="unchecked")
-  public void put(int field$, java.lang.Object value$) {
+  public void put(int field$, Object value$) {
     switch (field$) {
-    case 0: headers = (java.util.Map<java.lang.CharSequence,java.lang.CharSequence>)value$; break;
+    case 0: headers = (java.util.Map<CharSequence, CharSequence>)value$; break;
     case 1: body = (java.nio.ByteBuffer)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
@@ -49,7 +49,7 @@ public class SparkSinkEvent extends org.apache.avro.specific.SpecificRecordBase 
   /**
    * Gets the value of the 'headers' field.
    */
-  public java.util.Map<java.lang.CharSequence,java.lang.CharSequence> getHeaders() {
+  public java.util.Map<CharSequence, CharSequence> getHeaders() {
     return headers;
   }
 
@@ -57,7 +57,7 @@ public class SparkSinkEvent extends org.apache.avro.specific.SpecificRecordBase 
    * Sets the value of the 'headers' field.
    * @param value the value to set.
    */
-  public void setHeaders(java.util.Map<java.lang.CharSequence,java.lang.CharSequence> value) {
+  public void setHeaders(java.util.Map<CharSequence, CharSequence> value) {
     this.headers = value;
   }
 
@@ -97,12 +97,12 @@ public class SparkSinkEvent extends org.apache.avro.specific.SpecificRecordBase 
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<SparkSinkEvent>
     implements org.apache.avro.data.RecordBuilder<SparkSinkEvent> {
 
-    private java.util.Map<java.lang.CharSequence,java.lang.CharSequence> headers;
+    private java.util.Map<CharSequence, CharSequence> headers;
     private java.nio.ByteBuffer body;
 
     /** Creates a new Builder */
     private Builder() {
-      super(org.apache.spark.streaming.flume.sink.SparkSinkEvent.SCHEMA$);
+      super(SCHEMA$);
     }
     
     /** Creates a Builder by copying an existing Builder */
@@ -120,7 +120,7 @@ public class SparkSinkEvent extends org.apache.avro.specific.SpecificRecordBase 
     
     /** Creates a Builder by copying an existing SparkSinkEvent instance */
     private Builder(org.apache.spark.streaming.flume.sink.SparkSinkEvent other) {
-            super(org.apache.spark.streaming.flume.sink.SparkSinkEvent.SCHEMA$);
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.headers)) {
         this.headers = data().deepCopy(fields()[0].schema(), other.headers);
         fieldSetFlags()[0] = true;
@@ -132,12 +132,12 @@ public class SparkSinkEvent extends org.apache.avro.specific.SpecificRecordBase 
     }
 
     /** Gets the value of the 'headers' field */
-    public java.util.Map<java.lang.CharSequence,java.lang.CharSequence> getHeaders() {
+    public java.util.Map<CharSequence, CharSequence> getHeaders() {
       return headers;
     }
     
     /** Sets the value of the 'headers' field */
-    public org.apache.spark.streaming.flume.sink.SparkSinkEvent.Builder setHeaders(java.util.Map<java.lang.CharSequence,java.lang.CharSequence> value) {
+    public org.apache.spark.streaming.flume.sink.SparkSinkEvent.Builder setHeaders(java.util.Map<CharSequence, CharSequence> value) {
       validate(fields()[0], value);
       this.headers = value;
       fieldSetFlags()[0] = true;
@@ -185,7 +185,7 @@ public class SparkSinkEvent extends org.apache.avro.specific.SpecificRecordBase 
     public SparkSinkEvent build() {
       try {
         SparkSinkEvent record = new SparkSinkEvent();
-        record.headers = fieldSetFlags()[0] ? this.headers : (java.util.Map<java.lang.CharSequence,java.lang.CharSequence>) defaultValue(fields()[0]);
+        record.headers = fieldSetFlags()[0] ? this.headers : (java.util.Map<CharSequence, CharSequence>) defaultValue(fields()[0]);
         record.body = fieldSetFlags()[1] ? this.body : (java.nio.ByteBuffer) defaultValue(fields()[1]);
         return record;
       } catch (Exception e) {
