@@ -1,0 +1,76 @@
+SparkSQL一行转多行 一列变多列 多行转一行
+
+原始表字段name[name1，name2，name3]， sex, age  转化为  
+name, name1, sex , age
+name, name2, sex , age
+name, name3, sex , age
+
+项目开发中有这样的需求，原始数据如下：
++--------+-----------+
+|    name|    message|
++--------+-----------+
+|zhangsan| 4=18,33=78|
+|    lisi|23=54,67=88|
++--------+-----------+
+
+一行转多行：
+根据指定的标识符进行切分，然后一行转多行，以新列进行展示：
+
+val result= df.withColumn("newMessage",functions.explode(functions.split(functions.col("message"),",")))
+result.show()
+
+结果如下：
++--------+-----------+----------+
+|    name|    message|newMessage|
++--------+-----------+----------+
+|zhangsan| 4=18,33=78|      4=18|
+|zhangsan| 4=18,33=78|     33=78|
+|    lisi|23=54,67=88|     23=54|
+|    lisi|23=54,67=88|     67=88|
++--------+-----------+----------+
+
+一列变多列：
+将上面的结果数据newMessage，以“=”进行切割，然后等号两边的数据两列展示：
+val Df2 = result.withColumn("newMessage2",split(col("newMessage"), "="))
+.select(
+    col("name"),
+    col("message"),
+    col("newMessage"),
+    col("newMessage2").getItem(0).as("start"),
+    col("newMessage2").getItem(1).as("end")
+  ).drop("newMessage2");
+Df2.show(false)
+ 
+结果如下：
++--------+-----------+----------+-----+---+
+|name    |message    |newMessage|start|end|
++--------+-----------+----------+-----+---+
+|zhangsan|4=18,33=78 |4=18      |4    |18 |
+|zhangsan|4=18,33=78 |33=78     |33   |78 |
+|lisi    |23=54,67=88|23=54     |23   |54 |
+|lisi    |23=54,67=88|67=88     |67   |88 |
++--------+-----------+----------+-----+---+
+ 
+多行转一行：
+将下面数据中相同name的newMessage数据转成一行：
+
++--------+----------+
+|    name|newMessage|
++--------+----------+
+|zhangsan|      4=18|
+|zhangsan|     33=78|
+|    lisi|     23=54|
+|    lisi|     67=88|
++--------+----------+
+ 
+dataFrame.createTempView("dataFrame")
+sparkSession.sql("select name,concat_ws(',',collect_set(newMessage)) as message from dataFrame group by name").show()
+ 
+结果如下：
+
++--------+-----------+
+|    name|    message|
++--------+-----------+
+|zhangsan| 4=18,33=78|
+|    lisi|67=88,23=54|
++--------+-----------+

@@ -1,14 +1,17 @@
-package org.apache.spark.examples
+package org.apache.spark.examples.wc
 
-import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
-import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.SparkSession
 
 /**
   * 开发Spark案例之WordCount
   */
-object WordCountLocal {
+object WordCount {
 
   def main(args: Array[String]): Unit = {
+
+    // -Dhadoop.home.dir=C:\\SoftWare\\hadoop-2.7.7
+    // System.setProperty("hadoop.home.dir", "C:\\SoftWare\\hadoop-2.7.7")
     //    val conf = new SparkConf()
     //    conf.setAppName("WordCountLocal")
     //    conf.setMaster("local")
@@ -23,25 +26,34 @@ object WordCountLocal {
       .builder
       .appName("Spark Pi").master("local")
       .getOrCreate()
-    val lines = spark.read.textFile("D:\\Spark_Ws\\spark-apache\\examples\\src\\main\\resources\\word.txt")
+    val lines = spark.read.textFile("D:\\Spark_Ws\\spark-apache\\examples\\src\\main\\resources\\word.txt").rdd
     println("----------打印Dataset----------")
-    lines.show()
-    //添加隐式转换
-    import spark.implicits._
+
     //整理数据切分压平
     //Dataset只有一列，默认列名为value
-    val words: Dataset[String] = lines.flatMap(_.split(" "))
+    val wordRDD: RDD[String] = lines.flatMap(w=>{
+     var array:Array[String] =  w.split(",")
+      array
+    })
     println("----------打印切分压平之后的Dataset----------")
-    words.show()
-    //注册视图
-    words.createTempView("t_wc")
-    //执行sql（lazy）
-    val dataFrame: DataFrame = spark.sql("select value, count(*) counts from t_wc group by value order by value desc")
-    //执行计算
-    println("----------wordcount统计----------")
-    dataFrame.show()
+
+
+    val pairWordRDD = wordRDD.map(word => {
+      println(word)
+      new Tuple2(word, 1)
+    })
+    pairWordRDD.count();
+
+    pairWordRDD.collect().foreach(line => {
+      println(line._1 + "----------->" + line._2)
+    })
+    val wordCountRDD = pairWordRDD.reduceByKey((a, b) => a + b)
+    wordCountRDD.collect().foreach(line => {
+      println(line._1 + "----------->" + line._2)
+    })
+
+    wordCountRDD.saveAsTextFile("wordcount/res4")
 
   }
 
 }
-

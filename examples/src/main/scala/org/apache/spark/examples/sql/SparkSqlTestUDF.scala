@@ -2,7 +2,10 @@ package org.apache.spark.examples.sql;
 
 import org.apache.spark.sql.{SQLContext, SparkSession}
 
-object SparkSqlTest {
+/**
+  * 测试UDF函数
+  */
+object SparkSqlTestUDF {
 
   def main(args: Array[String]): Unit = {
 
