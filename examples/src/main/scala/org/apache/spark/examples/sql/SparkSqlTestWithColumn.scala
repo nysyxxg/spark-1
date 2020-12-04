@@ -11,11 +11,11 @@ object SparkSqlTestWithColumn {
   case class Person(name: String, message: String, age: Int, addr: String)
 
   def main(args: Array[String]): Unit = {
-//   旧版
-//    val conf = new SparkConf().setAppName("Spark Sql Test").setMaster("local")
-//    val sc = new SparkContext(conf)
-//    val sqlContext = new SQLContext(sc)
-//    import sqlContext.implicits._
+    //   旧版
+    //    val conf = new SparkConf().setAppName("Spark Sql Test").setMaster("local")
+    //    val sc = new SparkContext(conf)
+    //    val sqlContext = new SQLContext(sc)
+    //    import sqlContext.implicits._
 
     val spark = SparkSession.builder.appName("SparkSqlTest").master("local[1]").enableHiveSupport.getOrCreate
     val sc = spark.sparkContext
@@ -26,7 +26,7 @@ object SparkSqlTestWithColumn {
     people.show()
 
     // 一行转多行: 讲一个字段进行分隔成多个值，然后变成多行
-    val result:DataFrame  = people.withColumn("newMessage", functions.explode(functions.split(functions.col("message"), ",")))
+    val result: DataFrame = people.withColumn("newMessage", functions.explode(functions.split(functions.col("message"), ",")))
     result.show()
 
     result.collect().foreach(data => {
@@ -65,15 +65,14 @@ object SparkSqlTestWithColumn {
     peopleDF.createOrReplaceTempView("tmp_xxg")
 
     var newDataDf = spark.sql("select age,addr from tmp_xxg")
-    newDataDf = decryptDataTrans(newDataDf,colList.toList)
+    newDataDf = decryptDataTrans(newDataDf, colList.toList)
 
     newDataDf.show();
-      sc.stop();
+    sc.stop();
   }
 
 
-
-  def encryptDataTrans(df: Dataset[Row], colList:List[String]): Dataset[Row] = {
+  def encryptDataTrans(df: Dataset[Row], colList: List[String]): Dataset[Row] = {
     var dataFrame: Dataset[Row] = df
     dataFrame.schema.foreach {
       col =>
@@ -84,7 +83,7 @@ object SparkSqlTestWithColumn {
     dataFrame
   }
 
-  def decryptDataTrans(df: Dataset[Row], colList:List[String]): Dataset[Row] = {
+  def decryptDataTrans(df: Dataset[Row], colList: List[String]): Dataset[Row] = {
     var dataFrame: Dataset[Row] = df
     dataFrame.schema.foreach {
       col =>
