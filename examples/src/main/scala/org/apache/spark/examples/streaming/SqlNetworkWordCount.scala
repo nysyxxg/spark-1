@@ -70,8 +70,7 @@ object SqlNetworkWordCount {
       wordsDataFrame.createOrReplaceTempView("words")
 
       // Do word count on table using SQL and print it
-      val wordCountsDataFrame =
-        spark.sql("select word, count(*) as total from words group by word")
+      val wordCountsDataFrame = spark.sql("select word, count(*) as total from words group by word")
       println(s"========= $time =========")
       wordCountsDataFrame.show()
     }
@@ -89,14 +88,12 @@ case class Record(word: String)
 /** Lazily instantiated singleton instance of SparkSession */
 object SparkSessionSingleton {
 
-  @transient  private var instance: SparkSession = _
+  @transient
+  private var instance: SparkSession = _
 
   def getInstance(sparkConf: SparkConf): SparkSession = {
     if (instance == null) {
-      instance = SparkSession
-        .builder
-        .config(sparkConf)
-        .getOrCreate()
+      instance = SparkSession.builder.config(sparkConf).getOrCreate()
     }
     instance
   }

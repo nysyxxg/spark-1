@@ -1,0 +1,73 @@
+package org.apache.spark.examples.streaming
+
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.Path
+import org.apache.hadoop.io.{LongWritable, Text}
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat
+import org.apache.spark.SparkConf
+import org.apache.spark.serializer.KryoSerializer
+import org.apache.spark.streaming.dstream.{DStream, InputDStream}
+import org.apache.spark.streaming.{Durations, StreamingContext}
+
+/**
+  * 监控文件夹，实现单词统计，结果保存到HDFS
+  */
+object SparkStreamingWcPrint {
+  def main(args: Array[String]): Unit = {
+    val classes: Array[Class[_]] = Array[Class[_]](classOf[LongWritable], classOf[Text])
+    val conf = new SparkConf().setAppName("sparkstreamingfile").setMaster("local[2]")
+    conf.set("spark.streaming.fileStream.minRememberDuration", "2592000s")
+    conf.set("spark.serialize", classOf[KryoSerializer].getName())
+    conf.registerKryoClasses(classes)
+    //    设置批次间隔时间
+    val streamingContext = new StreamingContext(conf, Durations.seconds(30))
+    //    val inputPath = args(0)
+    //    val outputPath = args(1)
+
+    val inputPath = "D:\\Spark_Ws\\spark-apache\\data\\streaming\\input"
+    val outputPath = "D:\\Spark_Ws\\spark-apache\\data\\streaming\\output"
+
+    val hadoopConf = new Configuration()
+    val fileStream: InputDStream[(LongWritable, Text)] =
+      streamingContext.fileStream[LongWritable, Text, TextInputFormat](inputPath, (path: Path) => {
+        //println(path.getName);
+        //path.getName.endsWith(".csv")
+        path.getName.startsWith("part")
+      }, false, hadoopConf)
+
+    val mapToPair: DStream[(String, String)] = fileStream.map(_._2).map(line => {
+     // println(s"--------------line------${line}")
+      val array = line.toString.split(",")
+      (array(0), array(1))
+    })
+
+    val reducerByKey: DStream[(String, String)] = mapToPair.reduceByKey((col1, col2) => col1 + "|" + col2)
+
+    reducerByKey.foreachRDD((key, time) => {
+      println(s"-------111111111111-------time------${time}")
+      key.foreach(line => {
+        println(line._1 + "-------------->" + line._2)
+      })
+    })
+
+
+    mapToPair.reduceByKey((col1, col2) => col1 + "|" + col2)
+      .foreachRDD((key, time) => {
+      println(s"-------222222222222-------time------${time}")
+      key.foreach(line => {
+        println(line._1 + "-------------->" + line._2)
+      })
+    })
+
+
+    //结果输出到HDFS
+    //  reducerByKey.saveAsTextFiles(outputPath, "suffix")
+   // reducerByKey.saveAsTextFiles(outputPath)
+
+    //是否触发job取决于设置的Duration时间间隔
+    streamingContext.start()
+    //等待程序结束
+    streamingContext.awaitTermination()
+  }
+
+}
