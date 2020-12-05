@@ -24,7 +24,7 @@ object WordCount {
 
     val spark = SparkSession
       .builder
-      .appName("Spark Pi").master("local")
+      .appName("Spark Pi").master("local[3]")
       .getOrCreate()
     val lines = spark.read.textFile("D:\\Spark_Ws\\spark-apache\\examples\\src\\main\\resources\\word.txt").rdd
     println("----------打印Dataset----------")
@@ -45,14 +45,25 @@ object WordCount {
     pairWordRDD.count();
 
     pairWordRDD.collect().foreach(line => {
-      println(line._1 + "----------->" + line._2)
-    })
-    val wordCountRDD = pairWordRDD.reduceByKey((a, b) => a + b)
-    wordCountRDD.collect().foreach(line => {
-      println(line._1 + "----------->" + line._2)
+      val  threadName =  Thread.currentThread().getName
+      println(threadName + "-------1----------->" + line._1 + "----------->" + line._2)
     })
 
-    wordCountRDD.saveAsTextFile("wordcount/res4")
+
+    val wordCountRDD = pairWordRDD.reduceByKey((a, b) => a + b).repartition(2)
+
+    wordCountRDD.collect().foreach(line => {
+      val  threadName =  Thread.currentThread().getName
+      println(threadName + "----------2--------->" + line._1 + "----------->" + line._2)
+    })
+
+   // 多个线程答应测试
+    wordCountRDD.foreach(line => {
+      val  threadName =  Thread.currentThread().getName
+      println(threadName + "-------3------------->" + line._1 + "----------->" + line._2)
+    })
+
+    // wordCountRDD.saveAsTextFile("wordcount/res4")
 
   }
 
