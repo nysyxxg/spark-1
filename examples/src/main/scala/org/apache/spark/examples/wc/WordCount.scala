@@ -24,8 +24,8 @@ object WordCount {
 
     val spark = SparkSession
       .builder
-      .appName("Spark Pi").master("local[3]")
-      .getOrCreate()
+      .appName("Spark Pi").master("local[3]")  // local[3] // 3代表其中三个线程
+       .getOrCreate()
     val lines = spark.read.textFile("D:\\Spark_Ws\\spark-apache\\examples\\src\\main\\resources\\word.txt").rdd
     println("----------打印Dataset----------")
 

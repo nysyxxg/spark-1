@@ -1,24 +1,32 @@
 package org.apache.spark.examples.addfile
 
+
 import org.apache.spark.SparkFiles
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
+
+import scala.tools.scalap.Properties
+
 
 object AddFileTest {
 
   def main(args: Array[String]): Unit = {
 
+    var SPARK_HOME = Properties.envOrElse("SPARK_HOME", "local")
+    println(SPARK_HOME);
+
+    var master = Properties.envOrElse("master", "local")
+    println(master);
     var path = "D:\\Spark_Ws\\spark-apache\\examples\\src\\main\\resources\\word.txt"
 
-    val spark = SparkSession
+    val spark: SparkSession = SparkSession
       .builder
-      .appName("Spark Pi").master("local")
+      .appName("Spark Pi").master(master)
       .getOrCreate()
 
     val sc = spark.sparkContext
 
-
-    sc.addFile(path)  // 在每个worker节点都存储备份
+    sc.addFile(path) // 在每个worker节点都存储备份
     val lines = spark.read.textFile(SparkFiles.get("word.txt")).rdd
     println("----------打印Dataset----------")
 
@@ -35,17 +43,17 @@ object AddFileTest {
     })
     pairWordRDD.count();
 
-//    var path1 = "/user/iteblog/ip.txt"
-//    sc.addFile(path1)
-//    val rdd = sc.textFile(SparkFiles.get(""ip.txt))
-//
-//
-//    var path2 = "/user/iteblog/ip.txt"
-//    sc.addFile(path2)
-//    val rdd2 = sc.parallelize((0 to 10))
-//    rdd2.foreach { index =>
-//      val path = SparkFiles.get("ip.txt")
-//    }
+    //    var path1 = "/user/iteblog/ip.txt"
+    //    sc.addFile(path1)
+    //    val rdd = sc.textFile(SparkFiles.get(""ip.txt))
+    //
+    //
+    //    var path2 = "/user/iteblog/ip.txt"
+    //    sc.addFile(path2)
+    //    val rdd2 = sc.parallelize((0 to 10))
+    //    rdd2.foreach { index =>
+    //      val path = SparkFiles.get("ip.txt")
+    //    }
 
 
   }
