@@ -10,4 +10,12 @@ public class HiveTable {
     private String tableName;
     private String tableDescribe;
     private List<HiveColumn> columnList = new ArrayList<>();
+    
+    public String getTableName() {
+        return tableName;
+    }
+    
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
 }
