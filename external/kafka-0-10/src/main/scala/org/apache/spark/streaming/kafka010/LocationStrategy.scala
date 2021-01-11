@@ -45,12 +45,15 @@ private case class PreferFixed(hostMap: ju.Map[TopicPartition, String]) extends 
 
 /**
  * :: Experimental :: object to obtain instances of [[LocationStrategy]]
- *
+ * 位置策略，
+  * 控制特定的主题分区在哪个执行器上消费的。
+  * 在executor针对主题分区如何对消费者进行调度。
+  * 位置的选择是相对的，位置策略有三种方案：
  */
 @Experimental
 object LocationStrategies {
   /**
-   *  :: Experimental ::
+   *  :: Experimental ::  首选kafka服务器，只有在kafka服务器和executor位于同一主机，可以使用该中策略。
    * Use this only if your executors are on the same nodes as your Kafka brokers.
    */
   @Experimental
@@ -60,6 +63,9 @@ object LocationStrategies {
   /**
    *  :: Experimental ::
    * Use this in most cases, it will consistently distribute partitions across all executors.
+    * 首选一致性.
+    * 多数时候采用该方式，在所有可用的执行器上均匀分配kakfa的主题的所有分区。
+    * 综合利用集群的计算资源。
    */
   @Experimental
   def PreferConsistent: LocationStrategy =
@@ -69,6 +75,9 @@ object LocationStrategies {
    *  :: Experimental ::
    * Use this to place particular TopicPartitions on particular hosts if your load is uneven.
    * Any TopicPartition not specified in the map will use a consistent location.
+    * PreferFixed 首选固定模式。
+    * 如果负载不均衡，可以使用该中策略放置在特定节点使用指定的主题分区。手动控制方案。
+    * 没有显式指定的分区仍然采用(2)方案。
    */
   @Experimental
   def PreferFixed(hostMap: collection.Map[TopicPartition, String]): LocationStrategy =

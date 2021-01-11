@@ -18,4 +18,20 @@ public class HiveTable {
     public void setTableName(String tableName) {
         this.tableName = tableName;
     }
+    
+    public String getTableDescribe() {
+        return tableDescribe;
+    }
+    
+    public void setTableDescribe(String tableDescribe) {
+        this.tableDescribe = tableDescribe;
+    }
+    
+    public List<HiveColumn> getColumnList() {
+        return columnList;
+    }
+    
+    public void setColumnList(List<HiveColumn> columnList) {
+        this.columnList = columnList;
+    }
 }
