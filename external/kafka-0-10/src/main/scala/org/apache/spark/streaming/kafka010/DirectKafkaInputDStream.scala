@@ -179,11 +179,11 @@ private[spark] class DirectKafkaInputDStream[K, V](
   /**
    * Returns the latest (highest) available offsets, taking new partitions into account.
    */
-  protected def latestOffsets(): Map[TopicPartition, Long] = {
+  protected def latestOffsets(): Map[TopicPartition, Long] = {  // 获取所有的分区
     val c = consumer
     paranoidPoll(c)
     val parts = c.assignment().asScala
-
+     // 确保新分区反映在currentOffset中
     // make sure new partitions are reflected in currentOffsets
     val newPartitions = parts.diff(currentOffsets.keySet)
     // position for new partitions determined by auto.offset.reset if no commit
@@ -208,7 +208,7 @@ private[spark] class DirectKafkaInputDStream[K, V](
   }
 
   override def compute(validTime: Time): Option[KafkaRDD[K, V]] = {
-    val untilOffsets = clamp(latestOffsets())
+    val untilOffsets = clamp(latestOffsets())// 获取所有分区
     val offsetRanges = untilOffsets.map { case (tp, uo) =>
       val fo = currentOffsets(tp)
       OffsetRange(tp.topic, tp.partition, fo, uo)
