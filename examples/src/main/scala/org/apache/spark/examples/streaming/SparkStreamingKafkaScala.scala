@@ -37,13 +37,12 @@ object SparkStreamingKafkaScala {
     val conf = new SparkConf()
     conf.setAppName("kafka")
     //        conf.setMaster("spark://s101:7077")
-    conf.setMaster("local[8]")
-
+    conf.setMaster("local[2]")
     val ssc = new StreamingContext(conf, Seconds(5))
 
     //kafka参数
     val kafkaParams = Map[String, Object](
-      "bootstrap.servers" -> "s102:9092,s103:9092",
+      "bootstrap.servers" -> "172.21.1.167:9091,172.21.1.167:9092,172.21.1.167:9093",
       "key.deserializer" -> classOf[StringDeserializer],
       "value.deserializer" -> classOf[StringDeserializer],
       "group.id" -> "g1",
@@ -52,32 +51,34 @@ object SparkStreamingKafkaScala {
     )
 
     val map = scala.collection.mutable.Map[TopicPartition, String]()
-    map.put(new TopicPartition("t1", 0), "s102")
-    map.put(new TopicPartition("t1", 1), "s102")
-    map.put(new TopicPartition("t1", 2), "s102")
-    map.put(new TopicPartition("t1", 3), "s102")
+    map.put(new TopicPartition("test1", 0), "s102")
+    map.put(new TopicPartition("test1", 1), "s102")
+//    map.put(new TopicPartition("t1", 2), "s102")
+//    map.put(new TopicPartition("t1", 3), "s102")
     val locStra = LocationStrategies.PreferFixed(map);
-    val consit = LocationStrategies.PreferConsistent
+    val consitStra = LocationStrategies.PreferConsistent
+    val brokersStra = LocationStrategies.PreferBrokers
+
     val topics = Array("t1")
     //主题分区集合
     val tps = scala.collection.mutable.ArrayBuffer[TopicPartition]()
-    tps.+=(new TopicPartition("t1", 0))// 指定topic的分区
-//    tps.+=(new TopicPartition("t2", 1))
-//    tps.+=(new TopicPartition("t3", 2))
+    tps.+=(new TopicPartition("test1", 0)) // 指定topic的分区
+    //    tps.+=(new TopicPartition("t2", 1))
+    //    tps.+=(new TopicPartition("t3", 2))
 
     //偏移量集合
     val offsets = scala.collection.mutable.Map[TopicPartition, Long]()
-    offsets.put(new TopicPartition("t1", 0), 3)
+    offsets.put(new TopicPartition("test1", 0), 3)
     //        offsets.put(new TopicPartition("t2", 1), 3)
     //        offsets.put(new TopicPartition("t3", 2), 0)
 
     val conss = ConsumerStrategies.Assign[String, String](tps, kafkaParams, offsets)
-
+              //ConsumerStrategies.Assign[String, String](tps, kafkaParams, offsets)
     //创建kakfa直向流
     val stream = KafkaUtils.createDirectStream[String, String](
       ssc,
       locStra,
-      ConsumerStrategies.Assign[String, String](tps, kafkaParams, offsets)
+      conss
     )
 
     val ds2 = stream.map(record => {
@@ -88,15 +89,20 @@ object SparkStreamingKafkaScala {
       val par = record.partition()
       val topic = record.topic()
       val tt = ("k:" + key, "v:" + value, "o:" + offset, "p:" + par, "t:" + topic, "T : " + t)
-      //xxxx(tt) ;
-      SendDataToKafka.sendInfo(tt.toString(), this.toString)
+      // SendDataToKafka.sendInfo(tt.toString(), this.toString)
       tt
     })
+    // ds2.print()
+    ds2.foreachRDD(rdd=>{
+      rdd.foreachPartition(iter=>{
+        iter.foreach(line=>{
+            println("data-------->" + line._1 + "\t" + line._2 + "\t"+ line._3 + "\t"+ line._4 + "\t"+ line._5 + "\t"+ line._6 + "\t"  +   "]\t")
+        })
+      })
+    })
 
-    ds2.print()
 
     ssc.start()
-
     ssc.awaitTermination()
   }
 }
