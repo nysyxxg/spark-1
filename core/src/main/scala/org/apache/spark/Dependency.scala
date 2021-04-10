@@ -95,6 +95,10 @@ class ShuffleDependency[K: ClassTag, V: ClassTag, C: ClassTag](
 
 
 /**
+  * 窄依赖：  没有发生shuffle的RDD依赖，宽窄依赖的核心区别：窄依赖的RDD可以放在一个Task中运行
+  * 1：  一对一依赖 ： 例如：map函数算子
+  * 2：多对一依赖 ： 例如：使用coaleace() 进行合并分区，设置shuffle=false
+  * 3： Range窄依赖： 例如：rdd1.union.rdd2
  * :: DeveloperApi ::
  * Represents a one-to-one dependency between partitions of the parent and child RDDs.
  */
