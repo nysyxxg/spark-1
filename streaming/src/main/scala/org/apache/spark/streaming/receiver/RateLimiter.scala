@@ -31,12 +31,14 @@ import org.apache.spark.internal.Logging
  *
  * The spark configuration spark.streaming.receiver.maxRate gives the maximum number of messages
  * per second that each receiver will accept.
- *
+ * RateLimiter 它实质上是一个限流器，也可以叫做令牌，如果Executor中task每秒计算的速度大于该值则阻塞，
+  *            如果小于该值则通过，将流数据加入缓存中进行计算。这种机制也可以叫做令牌桶机制
  * @param conf spark configuration
  */
+// 初始最大接收速率。只适用于Receiver Stream，不适用于Direct Stream。
 private[receiver] abstract class RateLimiter(conf: SparkConf) extends Logging {
 
-  // treated as an upper limit
+  // treated as an upper limit   从配置参数中获取 maxRate
   private val maxRateLimit = conf.getLong("spark.streaming.receiver.maxRate", Long.MaxValue)
   private lazy val rateLimiter = GuavaRateLimiter.create(getInitialRateLimit().toDouble)
 
@@ -52,13 +54,14 @@ private[receiver] abstract class RateLimiter(conf: SparkConf) extends Logging {
   /**
    * Set the rate limit to `newRate`. The new rate will not exceed the maximum rate configured by
    * {{{spark.streaming.receiver.maxRate}}}, even if `newRate` is higher than that.
-   *
+   *   接收到的newRate进行比较，取两者中的最小值来作为最大处理速率，如果没有设置，直接设置为newRate
    * @param newRate A new rate in records per second. It has no effect if it's 0 or negative.
    */
   private[receiver] def updateRate(newRate: Long): Unit =
     if (newRate > 0) {
       if (maxRateLimit > 0) {
-        rateLimiter.setRate(newRate.min(maxRateLimit))
+        //如果设置了maxRateLimit则取两者中的最小值
+        rateLimiter.setRate(newRate.min(maxRateLimit))// 取两者中的最小值来作为最大处理速率
       } else {
         rateLimiter.setRate(newRate)
       }
@@ -68,6 +71,7 @@ private[receiver] abstract class RateLimiter(conf: SparkConf) extends Logging {
    * Get the initial rateLimit to initial rateLimiter
    */
   private def getInitialRateLimit(): Long = {
+    // 初始最大接收速率。只适用于Receiver Stream，不适用于Direct Stream。
     math.min(conf.getLong("spark.streaming.backpressure.initialRate", maxRateLimit), maxRateLimit)
   }
 }
