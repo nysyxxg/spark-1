@@ -709,6 +709,11 @@ class StreamingContext private[streaming] (
     if (stopSparkContext) sc.stop()
   }
 
+  /**
+    * 优雅的停止sparkstream :
+    * spark.streaming.stopGracefullyOnShutdown 设置成true
+    * kill -15/sigterm driverpid
+    */
   private def stopOnShutdown(): Unit = {
     val stopGracefully = conf.getBoolean("spark.streaming.stopGracefullyOnShutdown", false)
     logInfo(s"Invoking stop(stopGracefully=$stopGracefully) from shutdown hook")
