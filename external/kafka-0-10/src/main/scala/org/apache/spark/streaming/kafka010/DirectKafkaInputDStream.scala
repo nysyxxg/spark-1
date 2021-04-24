@@ -126,7 +126,7 @@ private[spark] class DirectKafkaInputDStream[K, V](
     }
   }
 
-  protected[streaming] def maxMessagesPerPartition(
+  protected[streaming] def maxMessagesPerPartition(// 每个分区的最大消息
     offsets: Map[TopicPartition, Long]): Option[Map[TopicPartition, Long]] = {
     val estimatedRateLimit = rateController.map(_.getLatestRate())
 

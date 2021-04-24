@@ -57,9 +57,12 @@ import org.apache.spark.util.{CallSite, Utils}
  *  - A list of other DStreams that the DStream depends on
  *  - A time interval at which the DStream generates an RDD
  *  - A function that is used to generate an RDD after each time interval
+  *  1:DStream 内部是有RDD组成的
+  *  2：DStream 本身也可以组成DAG的，因为Dsteam通过一些转换算子，也就是生成了新的Dstream
+  *
  */
 
-abstract class DStream[T: ClassTag] (
+abstract class DStream[T: ClassTag] ( // 定义一个抽象类
     @transient private[streaming] var ssc: StreamingContext
   ) extends Serializable with Logging {
 
@@ -75,7 +78,7 @@ abstract class DStream[T: ClassTag] (
   /** List of parent DStreams on which this DStream depends on */
   def dependencies: List[DStream[_]]
 
-  /** Method that generates an RDD for the given time */
+  /** Method that generates an RDD for the given time */   //这个是核心方法，用来生成RDD
   def compute(validTime: Time): Option[RDD[T]]
 
   // =======================================================================

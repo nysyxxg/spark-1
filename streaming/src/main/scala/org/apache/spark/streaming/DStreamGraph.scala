@@ -25,7 +25,8 @@ import org.apache.spark.internal.Logging
 import org.apache.spark.streaming.dstream.{DStream, InputDStream, ReceiverInputDStream}
 import org.apache.spark.streaming.scheduler.Job
 import org.apache.spark.util.Utils
-
+// DStreamGraph 将 DStream 联合起来，生成DStream 之间的DAG，这些DStream 之间的关系是相互依赖的关系
+// DStream 其实代表了源源不断的RDD的生成和处理，按照时间切片，所以一个DStream DAG又对应了随着时间的推进所产生的无限个RDDDAG
 final private[streaming] class DStreamGraph extends Serializable with Logging {
 
   private val inputStreams = new ArrayBuffer[InputDStream[_]]()

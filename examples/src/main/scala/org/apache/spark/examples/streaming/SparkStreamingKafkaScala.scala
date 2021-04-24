@@ -89,7 +89,7 @@ object SparkStreamingKafkaScala {
       val par = record.partition()
       val topic = record.topic()
       val tt = ("k:" + key, "v:" + value, "o:" + offset, "p:" + par, "t:" + topic, "T : " + t)
-      // SendDataToKafka.sendInfo(tt.toString(), this.toString)
+       SendDataToKafka.sendInfo(tt.toString(), this.toString)
       tt
     })
     // ds2.print()

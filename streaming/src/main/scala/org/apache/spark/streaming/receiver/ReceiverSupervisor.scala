@@ -32,6 +32,11 @@ import org.apache.spark.util.{ThreadUtils, Utils}
 /**
  * Abstract class that is responsible for supervising a Receiver in the worker.
  * It provides all the necessary interfaces for handling the data received by the receiver.
+  * 1: 在SparkStreaming程序开启的时候，Receiver Tracker 使用 JobScheduler 分发到不同的节点，每个job包含一个Task，这个Task就是  Receiver Supervisor
+  * 2： ReceiverSupervisor 运行在不同的节点上，ReceiverSupervisor 启动之后，后台运行 Receiver 实例
+  * 3： Receiver 实例 启动之后，就会持续不断的接收外界的数据，并持续交给 ReceiverSupervisor 进行数据存储
+  * 4： ReceiverSupervisor 持续不断的接收到Receiver 转过来的数据，并通过BlockManager来存储数据
+  * 5： 获取的数据存储完成之后，就会发生元数据给Driver端的ReceiverTracker，包含数据块的id，位置，数量，大小等信息
  */
 private[streaming] abstract class ReceiverSupervisor(
     receiver: Receiver[_],

@@ -28,7 +28,7 @@ object QueueStream {
   def main(args: Array[String]) {
 
     StreamingExamples.setStreamingLogLevels()
-    val sparkConf = new SparkConf().setAppName("QueueStream")
+    val sparkConf = new SparkConf().setAppName("QueueStream").setMaster("local")
     // Create the context
     val ssc = new StreamingContext(sparkConf, Seconds(1))
 
@@ -48,8 +48,9 @@ object QueueStream {
       rddQueue.synchronized {
         rddQueue += ssc.sparkContext.makeRDD(1 to 1000, 10)
       }
-      Thread.sleep(1000)
+      Thread.sleep(10 * 1000)
     }
+
     ssc.stop()
   }
 }
