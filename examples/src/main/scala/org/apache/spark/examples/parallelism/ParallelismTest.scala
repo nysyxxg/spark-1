@@ -9,6 +9,8 @@ import org.apache.spark.{SparkConf, SparkContext}
   * 代码中SparkConf的设置(最高的优先级)  >  spark-submit --选项  > spark-defaults.conf配置 > spark-env.sh配置 > 默认值
   *  说明： 1.  如果conf.set("spark.default.parallelism", "4") 设置，后面对应的shuffle算子，会和设置参数保持一致
   *         2.  如果没有设置conf.set("spark.default.parallelism", "4") ，后面对应的shuffle算子，会和父RDD的并并行度保持一致
+  *
+  *    能改变Spark任务并行度参数设置：conf.set("spark.default.parallelism", "4") ,repartition , coalesce
   */
 class ParallelismTest {
 
