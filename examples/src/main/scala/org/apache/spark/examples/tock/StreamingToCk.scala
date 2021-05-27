@@ -40,6 +40,7 @@ object StreamingToCk {
          // InternalRedisClient.getTableSchema(jedis, redisETLkey).asScala.toList.zipWithIndex.sortBy(_._2)
         // 获取ck的连接信息
         val clickhouseConfig: Properties =  null // chConfig.value
+//        val cf =  ClickHouseConfig.Builder.builder().build().`with`("jdbc:clickhouse://xxxx:9000/database",clickhouseConfig)
         val cf = new ClickHouseConfig("jdbc:clickhouse://xxxx:9000/database",clickhouseConfig)
         // 初始化ck连接
         val conn = ClickHouseConnection.createClickHouseConnection(cf)
