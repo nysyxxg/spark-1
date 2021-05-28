@@ -15,7 +15,7 @@ object CustomTextAppTest {
     //Caused by: java.lang.ClassNotFoundException: com.post.spark.bigdata.text.DefaultSource
     val people = sparkSession.read
       //  .text("file:///Users/wn/ide/idea/src/main/scala/com/post/spark/bigdata/app/people")
-      .format("com.post.spark.bigdata.text.DefaultSource")
+      .format("com.post.spark.bigdata.text.DefaultSourceProvider")
       .option("path", filePath).load()
 
     people.printSchema()

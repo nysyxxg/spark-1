@@ -11,7 +11,7 @@ import org.apache.spark.sql.types.StructType
   * 我们必须使用DefaultSource，这个代码中，我们只是将path、sqlContext、schema向下传递
   *
   */
-class DefaultSource extends RelationProvider with SchemaRelationProvider{
+class DefaultSourceProvider extends RelationProvider with SchemaRelationProvider{
   //
   override def createRelation(sqlContext: SQLContext, parameters: Map[String, String], schema: StructType): BaseRelation = {
     //从参数重获取path
