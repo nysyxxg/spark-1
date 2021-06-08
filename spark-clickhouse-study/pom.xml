@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>spark-parent_2.11</artifactId>
+        <groupId>org.apache.spark</groupId>
+        <version>2.2.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>spark-clickhouse-study</artifactId>
+    <dependencies>
+        <!-- Prevent our dummy JAR from being included in Spark distributions or uploaded to YARN -->
+        <dependency>
+            <groupId>org.spark-project.spark</groupId>
+            <artifactId>unused</artifactId>
+            <version>1.0.0</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_${scala.binary.version}</artifactId>
+            <version>${project.version}</version>
+            <!-- 此标签表示编译环境可用，运行时则不可用，主要是在 打包时不将这些依赖打进来，因为服务器上有，以免包过大
+              在本地测试的时候，需要注释掉  不然会报找不到类 -->
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming_${scala.binary.version}</artifactId>
+            <version>${project.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-mllib_${scala.binary.version}</artifactId>
+            <version>${project.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-hive_${scala.binary.version}</artifactId>
+            <version>${project.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-graphx_${scala.binary.version}</artifactId>
+            <version>${project.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming-flume_${scala.binary.version}</artifactId>
+            <version>${project.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.apache.spark</groupId>-->
+        <!--<artifactId>spark-streaming-kafka-0-8_${scala.binary.version}</artifactId>-->
+        <!--<version>${project.version}</version>-->
+        <!--<scope>provided</scope>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming-kafka-0-10_${scala.binary.version}</artifactId>
+            <version>${project.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.scalacheck</groupId>
+            <artifactId>scalacheck_${scala.binary.version}</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>com.github.scopt</groupId>
+            <artifactId>scopt_${scala.binary.version}</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>parquet-hadoop-bundle</artifactId>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.45</version>
+        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>org.apache.hadoop</groupId>-->
+        <!--<artifactId>hadoop-hdfs</artifactId>-->
+        <!--<scope>${hadoop.deps.scope}</scope>-->
+        <!--</dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>14.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>9.2.16.v20160414</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-util</artifactId>
+            <version>9.2.16.v20160414</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlets</artifactId>
+            <version>9.2.16.v20160414</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-security</artifactId>
+            <version>9.2.16.v20160414</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-http</artifactId>
+            <version>9.2.16.v20160414</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>kerberos-util</artifactId>
+            <version>2.2.0-SNAPSHOT</version>
+        </dependency>
+
+
+        <!--目前通过JDBC写Clickhouse有两种插件可以用-->
+        <!--官方的JDBC：8123端口-->
+        <!--基于HTTP实现的，整体性能不太出色，有可能出现超时的现象-->
+
+        <!--<dependency> 比较旧的-->
+            <!--<groupId>ru.yandex.clickhouse</groupId>-->
+            <!--<artifactId>clickhouse-jdbc</artifactId>-->
+            <!--<version>0.2.4</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>cc.blynk.clickhouse</groupId>
+            <artifactId>clickhouse4j</artifactId>
+            <version>1.4.4</version>
+        </dependency>
+
+        <!--housepower的ClickHouse-Native-JDBC：9000端口-->
+        <!--基于TCP协议实现，支持高性能写入，数据按列组织并有压缩-->
+        <!--<dependency>-->
+        <!--<groupId>com.github.housepower</groupId>-->
+        <!--<artifactId>clickhouse-native-jdbc</artifactId>-->
+        <!--<version>1.6-stable</version>-->
+        <!--</dependency>-->
+
+        <!--## pom要加入JDBC的依赖-->
+        <!-- normal version -->
+        <!--<dependency>-->
+        <!--<groupId>com.github.housepower</groupId>-->
+        <!--<artifactId>clickhouse-native-jdbc</artifactId>-->
+        <!--<version>2.1-stable</version>-->
+        <!--<version>2.3-stable</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>com.github.housepower</groupId>-->
+            <!--<artifactId>clickhouse-native-jdbc-shaded</artifactId>-->
+            <!--<version>2.3-stable</version>-->
+        <!--</dependency>-->
+
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.51</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.scalikejdbc/scalikejdbc -->
+        <dependency>
+            <groupId>org.scalikejdbc</groupId>
+            <artifactId>scalikejdbc_2.11</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+
+    </dependencies>
+
+    <build>
+        <outputDirectory>target/scala-${scala.binary.version}/classes</outputDirectory>
+        <testOutputDirectory>target/scala-${scala.binary.version}/test-classes</testOutputDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>${jars.target.dir}</outputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <profiles>
+        <profile>
+            <id>kinesis-asl</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.spark</groupId>
+                    <artifactId>spark-streaming-kinesis-asl_${scala.binary.version}</artifactId>
+                    <version>${project.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+</project>
